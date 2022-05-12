@@ -79,4 +79,6 @@ solution = solution_optimal(liste_objet, capacite)
 print("Le nombre de sac utilise avec la méthode First Fit Decreasing : ", len(bin_package_first_fit_decreasing), "sacs")
 print("La solution optimale : ", solution, "sacs")
 
+print("\nL'efficacite de l'algorithme approche de la methode bin packing ffd :",(len(bin_package_first_fit_decreasing) - solution))
+
 
