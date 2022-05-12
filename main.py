@@ -16,7 +16,7 @@ class Sac(object):
         self.objets.append(objet)
         self.poids_total += objet
 
-"""Algorithme de la méthode First Fit Decreasing"""
+""" Algorithme de la méthode First Fit Decreasing """
 def first_fit_decreasing(liste_objets, capacite_sac):
     # Trie la liste des objets dans un ordre décroissant avec la methode sorted et reverse = True.
     liste_decroissant = sorted(liste_objets, reverse=True)
@@ -44,12 +44,12 @@ def extraction_fichier(fichier):
     feuille = fichier1.active
     liste_objets = []
     # Recupere le nombre d'objet qui est dans la 2eme ligne de la 1ere colonne
-    nbre_objets = feuille.cell(row = 2, column = 1).value
+    nbre_objets = feuille.cell(row = 2, column = 2).value
     # Recupere la capacite du sac qui est dans la 2eme ligne de la 2eme colonne
-    capacite = feuille.cell(row = 2, column = 2).value
+    capacite = feuille.cell(row = 3, column = 2).value
     for i in range(2,nbre_objets+2):
         # Recupere le poids des objets de la 3eme colonne
-        case_objet = feuille.cell(row = i, column = 3)
+        case_objet = feuille.cell(row = 1, column = i)
         liste_objets.append(case_objet.value)
     return liste_objets,capacite
 
