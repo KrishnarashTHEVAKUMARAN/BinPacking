@@ -150,12 +150,16 @@ generation_fichier("DonneeTest_FFD10.xlsx")
 ###################### Affichage sur console des resultats numeriques du premiers excels (Exemple) ###############################
 
 print("\nExemple affichage console de l'algorithme FFD sur le premier excel")
+# Extraction du resultat du 1er fichier excel
 resultat = extraction_fichier("DonneeTest_FFD1.xlsx")
+# Recuperer les resultats pour ensuite les stocker dans les variables liste_objets et capacite
 liste_objet, capacite = resultat[0], resultat[1]
+# Appel des fonction first_fit_decreasing, first_fit et solution_optimal
 bin_package_first_fit_decreasing = first_fit_decreasing(liste_objet, capacite)
 bin_package_first_fit_random = first_fit(liste_objet, capacite)
 solution = solution_optimal(liste_objet, capacite)
 
+# Affichage des resultats sur le console
 print("La solution optimale : ", round(solution), "sacs")
 
 print("Le nombre de sac utilise avec la méthode First Fit Decreasing : ", len(bin_package_first_fit_decreasing), "sacs")
