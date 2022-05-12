@@ -3,6 +3,9 @@
 # Bin Packing (Methode First Fit Decreasing)
 
 import openpyxl
+import xlsxwriter
+import numpy as np
+import random
 
 """ On implémente la classe Sac """
 class Sac(object):
@@ -44,12 +47,12 @@ def extraction_fichier(fichier):
     feuille = fichier1.active
     liste_objets = []
     # Recupere le nombre d'objet qui est dans la 2eme ligne de la 1ere colonne
-    nbre_objets = feuille.cell(row = 2, column = 2).value
+    nbre_objets = feuille.cell(row = 2, column = 1).value
     # Recupere la capacite du sac qui est dans la 2eme ligne de la 2eme colonne
-    capacite = feuille.cell(row = 3, column = 2).value
+    capacite = feuille.cell(row = 2, column = 2).value
     for i in range(2,nbre_objets+2):
         # Recupere le poids des objets de la 3eme colonne
-        case_objet = feuille.cell(row = 1, column = i)
+        case_objet = feuille.cell(row = i, column = 3)
         liste_objets.append(case_objet.value)
     return liste_objets,capacite
 
@@ -80,5 +83,7 @@ print("Le nombre de sac utilise avec la méthode First Fit Decreasing : ", len(b
 print("La solution optimale : ", solution, "sacs")
 
 print("\nL'efficacite de l'algorithme approche de la methode bin packing ffd :",(len(bin_package_first_fit_decreasing) - solution))
+
+# generation_fichier("Example3.xlsx")
 
 
