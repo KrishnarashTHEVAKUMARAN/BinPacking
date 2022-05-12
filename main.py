@@ -42,7 +42,7 @@ et renvoie la liste des objets et la capacité du sac. """
 def extraction_fichier(fichier):
     fichier1 = openpyxl.load_workbook(fichier)
     feuille = fichier1.active
-    liste_objets =[]
+    liste_objets = []
     # Recupere le nombre d'objet qui est dans la 2eme ligne de la 1ere colonne
     nbre_objets = feuille.cell(row = 2, column = 1).value
     # Recupere la capacite du sac qui est dans la 2eme ligne de la 2eme colonne
@@ -64,21 +64,19 @@ def solution_optimal(liste_objets, capacite_sac):
     solution = poids_total/float(capacite_sac)
     return solution
 
-resultat = extraction_fichier("EntreeDonnee.xlsx")
-liste_objet, capacite = resultat[0], resultat[1]
-bin_package_first_fit_decreasing = first_fit_decreasing(liste_objet, capacite)
-solution = solution_optimal(liste_objet, capacite)
-
-print("Utilisation de l'algorithme FFD avec un excel")
-print("Le nombre de sac utilise avec la méthode First Fit Decreasing : ", len(bin_package_first_fit_decreasing), "sacs")
-print("La solution optimale : ", solution, "sacs")
-
-print("\nUtilisation de l'algorithme FFD avec des valeurs rentre dans le code")
+print("Utilisation de l'algorithme FFD avec des valeurs rentre dans le code")
 bin_package_first_fit_decreasing_1 = first_fit_decreasing([3,4,4,3,3,2,1], 10)
 solution = solution_optimal([3,4,4,3,3,2,1], 10)
 print("Le nombre de sac utilise avec la méthode First Fit Decreasing : ", len(bin_package_first_fit_decreasing_1), "sacs")
 print("La solution optimale : ", solution, "sacs")
 
+print("\nUtilisation de l'algorithme FFD avec un excel")
+resultat = extraction_fichier("ValeurTest_FFD1.xlsx")
+liste_objet, capacite = resultat[0], resultat[1]
+bin_package_first_fit_decreasing = first_fit_decreasing(liste_objet, capacite)
+solution = solution_optimal(liste_objet, capacite)
 
+print("Le nombre de sac utilise avec la méthode First Fit Decreasing : ", len(bin_package_first_fit_decreasing), "sacs")
+print("La solution optimale : ", solution, "sacs")
 
 
