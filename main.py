@@ -40,6 +40,27 @@ def first_fit_decreasing(liste_objets, capacite_sac):
             sacs.append(objets)
     return sacs
 
+def generation_fichier(fichier):
+    workbook = xlsxwriter.Workbook(fichier)
+    worksheet = workbook.add_worksheet("My sheet")
+
+    ligne = 1
+    capacite = random.randint(0,200)
+    nbre_objet = random.randint(0,100)
+    liste_objet = [random.randint(0,capacite) for p in range(0,nbre_objet)]
+
+    worksheet.write("A1", "Nombres d'objets")
+    worksheet.write("A2", nbre_objet)
+    worksheet.write("B1", "Capacité du sac")
+    worksheet.write("B2", capacite)
+    worksheet.write("C1", "Poids")
+
+    for item in liste_objet:
+        worksheet.write(ligne, 2, item)
+        ligne += 1
+
+    workbook.close()
+
 """ Cette fonction prend un fichier (excel de preference) qu'on renseigne en parametre
 et renvoie la liste des objets et la capacité du sac. """
 def extraction_fichier(fichier):
@@ -57,24 +78,20 @@ def extraction_fichier(fichier):
     return liste_objets,capacite
 
 def solution_optimal(liste_objets, capacite_sac):
-    poids_total = 0.0
+    poids_total = 0
     for objet_liste in liste_objets:
         # Nous ouvrons donc un nouveau sac et y ajoutons l'objet et chaque ajout d'objet, le poids de l'objet s'ajoutera au poids total
         objets = Sac()
         objets.ajout_objets(objet_liste)
         poids_total += objets.poids_total
     # Solution Optimal est le poids total divise par la capacite du sac
-    solution = poids_total/float(capacite_sac)
+    solution = poids_total/(capacite_sac)
     return solution
 
-print("Utilisation de l'algorithme FFD avec des valeurs rentre dans le code")
-bin_package_first_fit_decreasing_1 = first_fit_decreasing([3,4,4,3,3,2,1], 10)
-solution = solution_optimal([3,4,4,3,3,2,1], 10)
-print("Le nombre de sac utilise avec la méthode First Fit Decreasing : ", len(bin_package_first_fit_decreasing_1), "sacs")
-print("La solution optimale : ", solution, "sacs")
+generation_fichier("DonneeTest_FFD1.xlsx")
 
-print("\nUtilisation de l'algorithme FFD avec un excel")
-resultat = extraction_fichier("ValeurTest_FFD1.xlsx")
+print("\nl'algorithme FFD sur le premier excel")
+resultat = extraction_fichier("DonneeTest_FFD1.xlsx")
 liste_objet, capacite = resultat[0], resultat[1]
 bin_package_first_fit_decreasing = first_fit_decreasing(liste_objet, capacite)
 solution = solution_optimal(liste_objet, capacite)
@@ -84,6 +101,6 @@ print("La solution optimale : ", solution, "sacs")
 
 print("\nL'efficacite de l'algorithme approche de la methode bin packing ffd :",(len(bin_package_first_fit_decreasing) - solution))
 
-# generation_fichier("Example3.xlsx")
+
 
 
