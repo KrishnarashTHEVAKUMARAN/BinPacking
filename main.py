@@ -1,6 +1,6 @@
 # Codé par THEVAKUMARAN Krishnarash, LASNAMI Sara
 # Optimisation Combinatoire
-# Bin Packing (Methode First Fit Decreasing)
+# Bin Packing (Methode First Fit et First Fit Decreasing)
 
 import openpyxl
 import xlsxwriter
@@ -22,7 +22,8 @@ class Sac(object):
 """ Algorithme de la méthode First Fit """
 def first_fit(liste_objets, capacite):
     sacs = []
-    liste_aleatoire = np.random.permutation(liste_objets)  # list containing initial items in a random order
+    # Liste contenant les objets dans un ordre aléatoire
+    liste_aleatoire = np.random.permutation(liste_objets)
     liste_objets = liste_aleatoire.tolist()
 
     for objet_liste_random in liste_objets:
@@ -125,11 +126,11 @@ def generation_fichier(fichier):
     worksheet.write("F1", "Sac FFD")
     worksheet.write("F2", len(bin_package_first_fit_decreasing))
     worksheet.write("G1", "Efficacite de l'algo FFD")
-    worksheet.write("G2", round((len(bin_package_first_fit_decreasing) - solution)))
+    worksheet.write("G2", (len(bin_package_first_fit_decreasing) - round(solution)))
     worksheet.write("H1", "Sac FF")
     worksheet.write("H2", len(bin_package_first_fit_random))
     worksheet.write("I1", "Efficacite de l'algo FF")
-    worksheet.write("I2", round((len(bin_package_first_fit_random) - solution)))
+    worksheet.write("I2", (len(bin_package_first_fit_random) - round(solution)))
 
     # Fermeture de l'excel
     workbook.close()
@@ -147,7 +148,7 @@ generation_fichier("DonneeTest_FFD9.xlsx")
 generation_fichier("DonneeTest_FFD10.xlsx")
 
 ########################################################################################################################
-###################### Affichage sur console des resultats numeriques du premiers excels (Exemple) ###############################
+###################### Affichage sur console des resultats numeriques du premiers excels (Exemple) #####################
 
 print("\nExemple affichage console de l'algorithme FFD sur le premier excel")
 # Extraction du resultat du 1er fichier excel
@@ -163,10 +164,10 @@ solution = solution_optimal(liste_objet, capacite)
 print("La solution optimale : ", round(solution), "sacs")
 
 print("Le nombre de sac utilise avec la méthode First Fit Decreasing : ", len(bin_package_first_fit_decreasing), "sacs")
-print("L'efficacite de l'algorithme approche de la methode bin packing ffd :", round((len(bin_package_first_fit_decreasing) - solution)))
+print("L'efficacite de l'algorithme approche de la methode bin packing ffd :", (len(bin_package_first_fit_decreasing) - round(solution)))
 
 print("\nLe nombre de sac utilise avec la méthode First Fit : ", len(bin_package_first_fit_random), "sacs")
-print("L'efficacite de l'algorithme approche de la methode bin packing ff :", round((len(bin_package_first_fit_random) - solution)))
+print("L'efficacite de l'algorithme approche de la methode bin packing ff :", (len(bin_package_first_fit_random) - round(solution)))
 
 
 
