@@ -2,7 +2,6 @@
 # Optimisation Combinatoire
 # Bin Packing (Methode First Fit et First Fit Decreasing)
 
-import openpyxl
 import xlsxwriter
 import numpy as np
 import random
@@ -64,22 +63,6 @@ def first_fit_decreasing(liste_objets, capacite_sac):
             sacs.append(objets)
     return sacs
 
-""" Cette fonction prend un fichier (excel de preference) qu'on renseigne en parametre
-et renvoie la liste des objets et la capacité du sac. """
-def extraction_fichier(fichier):
-    fichier1 = openpyxl.load_workbook(fichier)
-    feuille = fichier1.active
-    liste_objets = []
-    # Recupere le nombre d'objet qui est dans la 2eme ligne de la 1ere colonne
-    nbre_objets = feuille.cell(row = 2, column = 1).value
-    # Recupere la capacite du sac qui est dans la 2eme ligne de la 2eme colonne
-    capacite = feuille.cell(row = 2, column = 2).value
-    for i in range(2,nbre_objets+2):
-        # Recupere le poids des objets de la 3eme colonne
-        case_objet = feuille.cell(row = i, column = 3)
-        liste_objets.append(case_objet.value)
-    return liste_objets,capacite
-
 """ Cette fonction prend la liste des objets et la capacité du sac et renvoi la solution optimal des majorants """
 def solution_optimal(liste_objets, capacite_sac):
     poids_total = 0
@@ -99,75 +82,48 @@ def generation_fichier(fichier):
     workbook = xlsxwriter.Workbook(fichier)
     worksheet = workbook.add_worksheet("Resultat")
 
-    # Instantiation des valeurs (ligne, capacite, nombre d'objets, liste d'objets, solution optimal)
-    ligne = 1
-    capacite = random.randint(1,200)
-    nbre_objet = random.randint(1,100)
-    liste_objet = [random.randint(0,capacite) for p in range(0,nbre_objet)]
-    bin_package_first_fit_decreasing = first_fit_decreasing(liste_objet, capacite)
-    bin_package_first_fit_random = first_fit(liste_objet, capacite)
-    solution = solution_optimal(liste_objet, capacite)
+    # Insertion des headers
+    worksheet.write("A1", "Les tables")
+    worksheet.write("B1", "Capacite du sac")
+    worksheet.write("C1", "Nombre d'objet")
+    worksheet.write("D1", "Solution Optimal")
+    worksheet.write("E1", "Solution Algorithme First Fit")
+    worksheet.write("F1", "Efficacite Algorithme First Fit")
+    worksheet.write("G1", "Solution Algorithme First Fit Decreasing")
+    worksheet.write("H1", "Efficacite Algorithme First Fit Decreasing")
+    worksheet.write("I1", "FF < FFD")
 
-    # Ecriture des valeurs dans la feuille de calcul d'excel
-    worksheet.write("A1", "Nombres d'objets")
-    worksheet.write("A2", nbre_objet)
-    worksheet.write("B1", "Capacité du sac")
-    worksheet.write("B2", capacite)
-    worksheet.write("C1", "Poids")
+    # Pour la generation de 10 tests
+    for i in range(2,101):
+        j=100
+        # Instantiation des valeurs (ligne, capacite, nombre d'objets, liste d'objets, solution optimal)
+        capacite = random.randint(1,200)
+        j+=50
+        nbre_objet = random.randint(10,j)
+        liste_objet = [random.randint(0,capacite) for p in range(0,nbre_objet)]
+        bin_package_first_fit_decreasing = first_fit_decreasing(liste_objet, capacite)
+        bin_package_first_fit_random = first_fit(liste_objet, capacite)
+        solution = solution_optimal(liste_objet, capacite)
 
-    # Ecriture des listes d'objets en colonne sur l'excel
-    for item in liste_objet:
-        worksheet.write(ligne, 2, item)
-        ligne += 1
-
-    # Ecriture des resultats numeriques sur l'excel
-    worksheet.write("E1", "Solution optimal")
-    worksheet.write("E2", round(solution))
-    worksheet.write("F1", "Sac FFD")
-    worksheet.write("F2", len(bin_package_first_fit_decreasing))
-    worksheet.write("G1", "Efficacite de l'algo FFD")
-    worksheet.write("G2", (len(bin_package_first_fit_decreasing) - round(solution)))
-    worksheet.write("H1", "Sac FF")
-    worksheet.write("H2", len(bin_package_first_fit_random))
-    worksheet.write("I1", "Efficacite de l'algo FF")
-    worksheet.write("I2", (len(bin_package_first_fit_random) - round(solution)))
+        # Ecriture des resultats numeriques sur l'excel
+        worksheet.write("A"+str(i), "Tables "+str(i))
+        worksheet.write("B"+str(i), capacite)
+        worksheet.write("C"+str(i), nbre_objet)
+        worksheet.write("D"+str(i), round(solution))
+        worksheet.write("E"+str(i), len(bin_package_first_fit_random))
+        worksheet.write("F"+str(i), (len(bin_package_first_fit_random) / round(solution)))
+        worksheet.write("G"+str(i), len(bin_package_first_fit_decreasing))
+        worksheet.write("H"+str(i), (len(bin_package_first_fit_decreasing) / round(solution)))
+        if((((len(bin_package_first_fit_random) / round(solution)) <= len(bin_package_first_fit_decreasing) / round(solution)))):
+            worksheet.write("I" + str(i), "True")
+        else :
+            worksheet.write("I" + str(i), "False")
 
     # Fermeture de l'excel
     workbook.close()
 
 #Appel de fonction de generation de fichier excel (Resultats numeriques sur ces excels)
-generation_fichier("DonneeTest_FFD1.xlsx")
-generation_fichier("DonneeTest_FFD2.xlsx")
-generation_fichier("DonneeTest_FFD3.xlsx")
-generation_fichier("DonneeTest_FFD4.xlsx")
-generation_fichier("DonneeTest_FFD5.xlsx")
-generation_fichier("DonneeTest_FFD6.xlsx")
-generation_fichier("DonneeTest_FFD7.xlsx")
-generation_fichier("DonneeTest_FFD8.xlsx")
-generation_fichier("DonneeTest_FFD9.xlsx")
-generation_fichier("DonneeTest_FFD10.xlsx")
-
-########################################################################################################################
-###################### Affichage sur console des resultats numeriques du premiers excels (Exemple) #####################
-
-print("\nExemple affichage console de l'algorithme FFD sur le premier excel")
-# Extraction du resultat du 1er fichier excel
-resultat = extraction_fichier("DonneeTest_FFD1.xlsx")
-# Recuperer les resultats pour ensuite les stocker dans les variables liste_objets et capacite
-liste_objet, capacite = resultat[0], resultat[1]
-# Appel des fonction first_fit_decreasing, first_fit et solution_optimal
-bin_package_first_fit_decreasing = first_fit_decreasing(liste_objet, capacite)
-bin_package_first_fit_random = first_fit(liste_objet, capacite)
-solution = solution_optimal(liste_objet, capacite)
-
-# Affichage des resultats sur le console
-print("La solution optimale : ", round(solution), "sacs")
-
-print("Le nombre de sac utilise avec la méthode First Fit Decreasing : ", len(bin_package_first_fit_decreasing), "sacs")
-print("L'efficacite de l'algorithme approche de la methode bin packing ffd :", (len(bin_package_first_fit_decreasing) - round(solution)))
-
-print("\nLe nombre de sac utilise avec la méthode First Fit : ", len(bin_package_first_fit_random), "sacs")
-print("L'efficacite de l'algorithme approche de la methode bin packing ff :", (len(bin_package_first_fit_random) - round(solution)))
+generation_fichier("ResultatsNumeriques.xlsx")
 
 
 
