@@ -93,7 +93,7 @@ def generation_fichier(fichier):
     worksheet.write("H1", "Efficacite Algorithme First Fit Decreasing")
     worksheet.write("I1", "FF < FFD")
 
-    # Pour la generation de 10 tests
+    # Pour la generation de 100 tests
     for i in range(2,101):
         j=100
         # Instantiation des valeurs (ligne, capacite, nombre d'objets, liste d'objets, solution optimal)
